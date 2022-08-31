@@ -47,6 +47,10 @@ var _ = Context("failure", func() {
 			"-D", "test", "-e", "CREATE TABLE t (x char(32)) ENGINE=InnoDB")
 	})
 
+	AfterEach(func() {
+		kubectlSafe(fillTemplate(failureYAML), "delete", "-f", "-")
+	})
+
 	It("should make a new replica pod ready", func() {
 		By("keeping writing data to the cluster")
 		ctx, cancel := context.WithCancel(context.Background())

@@ -45,6 +45,10 @@ var _ = Context("pvc_test", func() {
 		}).Should(Succeed())
 	})
 
+	AfterEach(func() {
+		kubectlSafe(fillTemplate(pvcTestYAML), "delete", "-f", "-")
+	})
+
 	It("should pvc template change succeed", func() {
 		kubectlSafe(fillTemplate(pvcApplyYAML), "apply", "-f", "-")
 		Eventually(func() error {

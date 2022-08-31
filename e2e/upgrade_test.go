@@ -148,4 +148,8 @@ var _ = Context("upgrade", func() {
 			return errors.New("no health condition")
 		}).Should(Succeed())
 	})
+
+	AfterEach(func() {
+		kubectlSafe(fillTemplateWithVersion(upgradeYAML, mysqlVersionOld), "delete", "-f", "-")
+	})
 })

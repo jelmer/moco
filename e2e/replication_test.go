@@ -60,6 +60,10 @@ var _ = Context("replication", func() {
 			"-e", "DROP USER 'moco-writable'@'%'")
 	})
 
+	AfterEach(func() {
+		kubectlSafe(fillTemplate(donorYAML), "delete", "-f", "-")
+	})
+
 	It("should construct an intermediate primary and replicas", func() {
 		kubectlSafe(fillTemplate(replYAML), "apply", "-f", "-")
 
@@ -91,6 +95,10 @@ var _ = Context("replication", func() {
 			}
 			return errors.New("no health condition")
 		}).Should(Succeed())
+	})
+
+	AfterEach(func() {
+		kubectlSafe(fillTemplate(replYAML), "delete", "-f", "-")
 	})
 
 	It("should replicate data from the donor", func() {
